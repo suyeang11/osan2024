@@ -1,0 +1,75 @@
+<html>
+<head></head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.js"></script>
+<button type="button" onclick="startSort()">Start Sorting</button>
+<div><canvas id="myChart" height="80"></canvas></div>
+<div id="debug">tried</div>
+<script>
+const total = 100;
+let i = 0, j = 0;
+let sorted = false;
+
+const ctx = document.getElementById('myChart').getContext('2d');
+const myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: [],
+        datasets: [{
+            label: 'Random Number',
+            data: [],
+            borderColor: 'green',
+            backgroundColor: 'rgba(255, 99, 132, 0.1)',
+            borderWidth : 0.1
+        },
+        {
+            label: 'Sorted Number',
+            data: [],
+            borderColor: 'blue',
+            backgroundColor: 'rgba(54, 162, 235, 0.1)',
+            borderWidth : 0.5
+        }]
+    },
+    options: { }
+});
+
+const randomArray = myChart.data.datasets[0].data;
+const sortedArray = myChart.data.datasets[1].data;
+
+// 임의의 배열을 생성하여 randomArray와 sortedArray에 추가
+for (let i = 0; i < total; i++) {
+    const num = Math.floor(Math.random() * 100);
+    myChart.data.labels[i] = i;
+    randomArray[i] = num;
+    sortedArray[i] = num;
+}       
+myChart.update();
+
+function startSort() {
+    count =0
+    while ( count ++ < total){
+    // 버블 정렬을 한 단계씩 수행하고 업데이트
+    setTimeout(function(){
+    if (j < sortedArray.length - i - 1) {
+        if (sortedArray[j] > sortedArray[j + 1]) {
+            let tmp = sortedArray[j];
+            sortedArray[j] = sortedArray[j + 1];
+            sortedArray[j + 1] = tmp;
+         }
+        }
+        j++;
+    
+    myChart.update();
+}, 100*count)
+    }
+   
+ 
+
+    // 정렬이 완료되지 않았으면 다음 단계 호출
+    if (i < sortedArray.length - 1) {
+        setTimeout(startSort, 100); // 100ms 간격으로 다음 단계 호출
+    }
+}
+</script>
+</body>
+</html>
